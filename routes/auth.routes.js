@@ -18,8 +18,8 @@ router.post("/signup", async (req, res, next) => {
     }
 
     // Hash password
-    const salt = await bcrypt.genSaltSync(12);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
+    const salt = bcrypt.genSaltSync(12);
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
     // Create new user in the DB
     const newUser = await User.create({
@@ -30,7 +30,7 @@ router.post("/signup", async (req, res, next) => {
       country,
     });
 
-    res.status(201).json({ message: "user successfully created in DB" });
+    res.status(201).json({data: newUser, message: "user successfully created in DB" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error occured during signup" });
