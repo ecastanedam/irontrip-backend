@@ -4,8 +4,14 @@ const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
 // GET /request/host/:userId - get all request for one host
 router.get('/host/:userId', isAuthenticated, async (req, res, next) => {
+    const { userId } = req.params;
+    if (userId !== req.payload.id) {
+        const error = new Error("Access denied.");
+        error.status = 403;
+        return next(error);
+    }
     try {
-        const { userId } = req.params;
+        
         const allRequestByHost = await Request.find({ host: userId })
         .populate({
             path: "traveler",
@@ -24,8 +30,16 @@ router.get('/host/:userId', isAuthenticated, async (req, res, next) => {
 });
 // GET /request/traveler/:userId - get all request for one traveler
 router.get('/traveler/:userId', isAuthenticated, async (req, res, next) => {
+    const { userId } = req.params;
+
+    if (userId !== req.payload.id) {
+        const error = new Error("Access denied.");
+        error.status = 403;
+        return next(error);
+    }
+    
     try {
-        const { userId } = req.params;
+        
         const allRequestByTraveler = await Request.find({ traveler: userId })
         .populate({
             path: "listing",
@@ -33,18 +47,23 @@ router.get('/traveler/:userId', isAuthenticated, async (req, res, next) => {
         });
         res
         .status(200)
-        .json({data: allRequestByHost, message: "Requests getting with success."});
+        .json({data: allRequestByTraveler, message: "Requests getting with success."});
     } catch (error) {
         next(error);
     }
 });
 // GET /request/:requestId - get One request
 router.get('/:requestId', isAuthenticated, async (req, res, next) => {
+   
     try {
         const { requestId } = req.params;
         const selectedRequest = await Request.findById(requestId);
-        res
-        .status(200)
+        if (selectedRequest.host.toString() !== req.payload.id && selectedRequest.traveler.toString() !== req.payload.id) {
+            const error = new Error("Access denied.");
+            error.status = 403;
+            return next(error);
+        }
+        res.status(200)
         .json({data: selectedRequest, message: "Request getting with success."});
     } catch (error) {
         next(error);
@@ -69,6 +88,19 @@ router.post('/create', isAuthenticated, async (req, res, next) => {
 router.patch('/update/:requestId', isAuthenticated, async (req, res, next) => {
     try {
         const { requestId } = req.params;
+          // Find the request by ID
+        const selectedRequest= await Request.findById(requestId)
+        if (!selectedRequest) { // check if the request exists
+            return res.status(404).json({ message: "Request not found." });
+          }   
+
+        // check if the user is the host or the traveler of the request
+        if (selectedRequest.host.toString() !== req.payload.id && selectedRequest.traveler.toString() !== req.payload.id) {
+            const error = new Error("Access denied.");
+            error.status = 403;
+            return next(error);
+        }
+        //update the request
         const updatedRequest = await Request.findByIdAndUpdate(requestId, req.body, {new: true})
         .populate({
             path: "listing",
@@ -93,10 +125,23 @@ router.patch('/update/:requestId', isAuthenticated, async (req, res, next) => {
 router.delete('/delete/:requestId', isAuthenticated, async (req, res, next) => {
     try {
         const { requestId } = req.params;
+
+        // Find the request by ID
+        const selectedRequest = await Request.findById(requestId);
+        if (!selectedRequest) {
+        return res.status(404).json({ message: "Request not found." });
+        }   
+        // check if the user is the host or the traveler of the request
+        if (selectedRequest.host.toString() !== req.payload.id && selectedRequest.traveler.toString() !== req.payload.id) {
+            const error = new Error("Access denied.");
+            error.status = 403;
+            return next(error);
+        }
+        //delete the request
         const deletedRequest = await Request.findByIdAndDelete(requestId);
         res
-        .status(204)
-        .json({ message: "Request deleted." });
+        .status(200)
+        .json({ data:deletedRequest,message: "Request deleted." });
     } catch(error) {
         next(error);
     }
