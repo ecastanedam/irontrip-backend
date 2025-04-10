@@ -15,6 +15,12 @@ const listingSchema = new Schema(
       trim: true,
     },
 
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     city: {
       type: String,
       required: true,
@@ -42,7 +48,7 @@ const listingSchema = new Schema(
       {
         startDate: { type: Date, required: true },
         endDate: { type: Date, required: true },
-      },
+      }
     ],
   },
   {

@@ -7,6 +7,7 @@ function isAuthenticated(req, res, next) {
             req.headers.authorization.split(" ")[0] === "Bearer"&&
             req.headers.authorization.split(" ")[1]
         ){
+            console.log("I'm logged");
             const token = req.headers.authorization.split(" ")[1];
             const payload = jwt.verify(token, process.env.JWT_SECRET);
             req.payload = payload;

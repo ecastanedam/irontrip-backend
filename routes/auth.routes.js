@@ -32,8 +32,9 @@ router.post("/signup", async (req, res, next) => {
 
     res.status(201).json({data: newUser, message: "user successfully created in DB" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error occured during signup" });
+    // console.error(error);
+    // res.status(500).json({ message: "Error occured during signup" });
+    next(error);
   }
 });
 
@@ -74,8 +75,9 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({ token, userId: user._id });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "An error occurred during login." });
+    // console.error(error);
+    // res.status(500).json({ message: "An error occurred during login." });
+    next(error)
   }
 });
 
