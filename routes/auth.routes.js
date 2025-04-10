@@ -40,7 +40,7 @@ router.post("/signup", async (req, res, next) => {
 
 //login route to find user by email and compare password
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
-
+    console.log ("JWT secret", process.env.JWT_SECRET);
     // Create JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email }, //payload
@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     // console.error(error);
     // res.status(500).json({ message: "An error occurred during login." });
-    next(error)
+    next(error);
   }
 });
 

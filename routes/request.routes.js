@@ -72,11 +72,11 @@ router.get('/:requestId', isAuthenticated, async (req, res, next) => {
 // POST /request/create - create One request
 router.post('/create', isAuthenticated, async (req, res, next) => {
     try {
-        const createdRequest = await Request.create(req.body)
-        .populate({
-            path: "listing",
-            select: "_id title city country",
-        });
+        const createdRequest = await Request.create(req.body);
+        // .populate({
+        //     path: "listing",
+        //     select: "_id title city country",
+        // });
         res
         .status(201)
         .json({data: createdRequest, message: "Request created."});
