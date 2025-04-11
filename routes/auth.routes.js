@@ -64,7 +64,7 @@ router.post("/login", async (req, res, next) => {
     }
     console.log ("JWT secret", process.env.JWT_SECRET);
     // Create JWT token
-    const token = jwt.sign(
+    const authToken = jwt.sign(
       { id: user._id, email: user.email }, //payload
       process.env.JWT_SECRET, // secret key
       {
@@ -73,7 +73,7 @@ router.post("/login", async (req, res, next) => {
       }
     );
 
-    res.status(200).json({ token, userId: user._id });
+    res.status(200).json({authToken, userId: user._id });
   } catch (error) {
     // console.error(error);
     // res.status(500).json({ message: "An error occurred during login." });
