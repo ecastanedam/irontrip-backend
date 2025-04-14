@@ -11,6 +11,16 @@ const express = require("express");
 
 const app = express();
 
+const cors = require("cors");
+
+// Allow requests from the origin specified in the .env file
+const corsOptions = {
+  origin: process.env.ORIGIN, 
+  credentials: true, // Allow cookies and credentials
+};
+
+app.use(cors(corsOptions));
+
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 

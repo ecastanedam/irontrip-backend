@@ -48,8 +48,14 @@ const listingSchema = new Schema(
       {
         startDate: { type: Date, required: true },
         endDate: { type: Date, required: true },
-      }
+      },
     ],
+
+    image: {
+      type: String, // URL of the image
+      required: false, // Optional field
+      trim: true,
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
