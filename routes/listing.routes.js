@@ -44,9 +44,19 @@ router.get("/:listingId", async (req, res, next) => {
       path: "host",
       select: "_id username",
     });
+
+    if (!oneListing) {
+      return res.status(404).json({ message: "Listing not found." });
+    }
+
+    // Ensure availability is always included, even if it's missing
+    if (!oneListing.availability) {
+      oneListing.availability = [];
+    }
+
     res
       .status(200)
-      .json({ data: oneListing, message: "Listing getting with succes." });
+      .json({ data: oneListing, message: "Listing retrieved successfully." });
   } catch (error) {
     next(error);
   }
