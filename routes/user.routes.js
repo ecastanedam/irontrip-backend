@@ -4,7 +4,7 @@ const bcryptjs = require("bcryptjs");
 const { isAuthenticated } = require("../middlewares/jwt.middleware"); // create and import the middleware to check if it's authenticated
 
 // GET /user/:userId
-router.get("/user/:userId", isAuthenticated, async (req, res, next) => {
+router.get("/:userId", isAuthenticated, async (req, res, next) => {
   try {
     const { userId } = req.params;
     const currentUser = await User.findById(userId);
