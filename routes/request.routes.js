@@ -3,7 +3,7 @@ const Request = require("../models/Request.model");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
 // GET /request/ - get all request
-router.get("/", isAuthenticated, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const allRequests = await Request.find()
       .populate({
