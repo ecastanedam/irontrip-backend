@@ -2,6 +2,27 @@ const router = require('express').Router();
 const Request = require('../models/Request.model');
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
+// GET /request/ - get all request
+router.get('/', isAuthenticated, async (req, res, next) => {
+    try {
+        const allRequests = await Request.find()
+        .populate({
+          path: "host",
+          select: "_id username",
+        })
+        .populate({
+            path: "traveler",
+            select: "_id username",
+        })
+        .populate("listing");
+        res
+          .status(200)
+          .json({ data: allRequests, message: "Requests getting with succes." });
+      } catch (error) {
+        next(error);
+      }
+});
+
 // GET /request/host/:userId - get all request for one host
 router.get('/host/:userId', isAuthenticated, async (req, res, next) => {
     const { userId } = req.params;
