@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Listing = require("../models/Listing.model");
 const geocodeAddress = require("../services/geocode");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
+const uploader = require("../middlewares/cloudinary.config");
+const { json } = require("express");
 
 // GET /listing/ - get all listings
 router.get("/", async (req, res, next) => {
@@ -62,16 +64,34 @@ router.get("/:listingId", async (req, res, next) => {
   }
 });
 // POST /listing/create - create one listing
-router.post("/create", isAuthenticated, async (req, res, next) => {
+router.post("/create", isAuthenticated,  uploader.single("listingPicture"), async (req, res, next) => {
   try {
     // get the exact coordonates from adress details
-    const { address, city, country } = req.body;
+    const { address, city, country, listingPicture, availability } = req.body;
     const fullAddress = `${address}, ${city}, ${country}`;
     const coords = await geocodeAddress(fullAddress);
+    
+    if (typeof availability === "string") {
+      req.body.availability = JSON.parse(availability);
+    }
+    // Check if a picture file is uploaded with the middleware "uploader"
+    let finalImageUrl = "";
+    if (req.file) {
+      // Uploaded image retrieved by multer
+      console.log("req.file : ", req.file);
+      finalImageUrl = req.file?.path;
+    } else if (listingPicture) {
+      // URL image 
+      console.log("listingPicture : ", listingPicture);
+      finalImageUrl = listingPicture;
+    }
+
     const formattedData = {
       ...req.body,
       location: coords, // {lat: xx..., lgn: yy...}
+      image: finalImageUrl || undefined,
     };
+
     const createdListing = await Listing.create(formattedData);
     res.status(201).json({ data: createdListing, message: "Listing created." });
   } catch (error) {
