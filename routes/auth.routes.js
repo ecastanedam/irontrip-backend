@@ -1,19 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
+const uploader = require("../middlewares/cloudinary.config");
+const User = require("../models/User.model");
 
 // create user with a hashed password
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", uploader.single("profilePicture"), async (req, res, next) => {
   
   try {
-    const { username, email, password, city, country } = req.body;
+    const { username, email, password, city, country, profilePicture } = req.body;
 
     // Validate input
     if (!username || !email || !password || !city || !country) {
       return res.status(400).json({ message: "All fields are required." });
+    }
+
+    // Check if a picture file is uploaded with the middleware "uploader"
+    let finalImageUrl = "";
+    if (req.file) {
+      // Uploaded image retrieved by multer
+      console.log("req.file : ", req.file);
+      finalImageUrl = req.file?.path;
+    } else if (profilePicture) {
+      // URL image 
+      console.log("profilePicture : ", profilePicture);
+      finalImageUrl = profilePicture;
     }
 
     // Check if user already exists
@@ -33,6 +46,7 @@ router.post("/signup", async (req, res, next) => {
       password: hashedPassword,
       city,
       country,
+      profilePicture: finalImageUrl || undefined
     });
 
     res.status(201).json({data: newUser, message: "user successfully created in DB" });

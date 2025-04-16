@@ -10,14 +10,32 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET
 });
 
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   folder: 'bananarama', // The name of the folder in cloudinary . You can name this whatever you want
+//   allowedFormats: ['jpg', 'png'],
+//   // params: { resource_type: 'raw' }, => add this is in case you want to upload other type of files, not just images
+//   filename: function (req, res, cb) {
+//     cb(null, res.originalname); // The file on cloudinary will have the same name as the original file name
+//   }
+// });
+
 const storage = new CloudinaryStorage({
   cloudinary,
-  folder: 'bananarama', // The name of the folder in cloudinary . You can name this whatever you want
-  allowedFormats: ['jpg', 'png'],
-  // params: { resource_type: 'raw' }, => add this is in case you want to upload other type of files, not just images
-  filename: function (req, res, cb) {
-    cb(null, res.originalname); // The file on cloudinary will have the same name as the original file name
-  }
+  params: {
+    folder: "bananarama",
+    allowed_formats: ["jpg", "png"],
+    transformation: [
+      {
+        width: 600,
+        height: 600,
+        crop: "fill", // or 'limit' if I don't want to crop
+        gravity: "auto",
+        fetch_format: "auto",
+        quality: "auto",
+      },
+    ],
+  },
 });
 
 module.exports = multer({ storage });
