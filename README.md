@@ -135,4 +135,4 @@ IronTrip is a full-stack MERN (MongoDB, Express, React, Node.js) application tha
 
 ### Slides
 
-- **Slides Link:** [Slides Link](PENDING-LINK-HERE)
+- **Slides Link:** [Slides Link](https://docs.google.com/presentation/d/1F-yCA52RYL-UrmpNwFFl5f-q-TQKjfvYbN9wlklpn70/edit?usp=sharing)
