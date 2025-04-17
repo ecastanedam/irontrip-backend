@@ -58,29 +58,31 @@ IronTrip is a full-stack MERN (MongoDB, Express, React, Node.js) application tha
 
 ### Auth Routes
 
-- `GET /auth/me`: Get the logged-in user's info
-- `POST /auth/signup`
-  - **Body:**
-    ```json
-    {
-      "username": "testuser",
-      "email": "testuser@example.com",
-      "password": "password123",
-      "city": "Test City",
-      "country": "Test Country"
-    }
-    ```
-- `POST /auth/login`
-  - **Body:**
-    ```json
-    {
-      "email": "testuser@example.com",
-      "password": "password123"
-    }
-    ```
-- `POST /auth/logout`
-  - **Body:** (empty)
+### Auth Routes
 
+- `GET /auth/verify`: Checks if the provided authentication token is valid. Requires a valid JWT token to be sent (in the `Authorization` header as a Bearer token). 
+- `POST /auth/signup`: Register a new user. Accepts an optional `profilePicture` which can be a URL or uploaded as a file.
+  - **Request Body:**
+    ```json
+    {
+      "username": "string (required)",
+      "email": "string (required, unique)",
+      "password": "string (required, min 6 characters)",
+      "city": "string (required)",
+      "country": "string (required)",
+      "profilePicture": "string (optional, URL)"
+    }
+    ```
+   
+- `POST /auth/login`: Log in an existing user.
+  - **Request Body:**
+    ```json
+    {
+      "email": "string (required)",
+      "password": "string (required)"
+    }
+    ```
+ 
 ### User Routes
 
 - `GET /user/:userId`: Get user profile
