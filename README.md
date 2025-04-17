@@ -2,6 +2,23 @@
 
 IronTrip is a full-stack MERN (MongoDB, Express, React, Node.js) application that connects travelers with hosts offering spaces. Users can create listings, send requests, and manage their profiles.
 
+## Table of Contents
+
+- [Server](#server)
+  - [Models](#models)
+    - [User Model](#user-model)
+    - [Listing Model](#listing-model)
+    - [Request Model](#request-model)
+  - [API Endpoints/Backend Routes](#api-endpointsbackend-routes)
+    - [Auth Routes](#auth-routes)
+    - [User Routes](#user-routes)
+    - [Listing Routes](#listing-routes)
+    - [Request Routes](#request-routes)
+- [Links](#links)
+  - [Version Control](#version-control)
+  - [Deployment](#deployment)
+  - [Presentation](#presentation)
+
 ## Server
 
 ### Models
@@ -113,7 +130,7 @@ IronTrip is a full-stack MERN (MongoDB, Express, React, Node.js) application tha
 - **Frontend Repository:** [irontrip-frontend](https://github.com/CannyRo/irontrip-frontend)
 - **Backend Repository:** [irontrip-backend](https://github.com/ecastanedam/irontrip-backend)
 - **Deployed Application (Frontend):** [IronTrip Frontend](https://irontrip-frontend.netlify.app/)
+
 ### Slides
 
-The URL to your presentation slides:
 - **Slides Link:** [Slides Link](PENDING-LINK-HERE)
