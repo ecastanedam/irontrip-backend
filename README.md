@@ -132,7 +132,3 @@ IronTrip is a full-stack MERN (MongoDB, Express, React, Node.js) application tha
 - **Frontend Repository:** [irontrip-frontend](https://github.com/CannyRo/irontrip-frontend)
 - **Backend Repository:** [irontrip-backend](https://github.com/ecastanedam/irontrip-backend)
 - **Deployed Application (Frontend):** [IronTrip Frontend](https://irontrip-frontend.netlify.app/)
-
-### Slides
-
-- **Slides Link:** [Slides Link](https://docs.google.com/presentation/d/1F-yCA52RYL-UrmpNwFFl5f-q-TQKjfvYbN9wlklpn70/edit?usp=sharing)
